@@ -52,13 +52,30 @@ function displaySearch(index){
 
         gifElem.data("url", gif.url);
         gifElem.data("url_still", gif.url_still)
+        gifElem.data("active", false);
 
         gifElem.mouseenter(function(event){
-            $(event.target).attr("src", $(event.target).data("url"));
+            if(!$(event.target).data("active")){
+                $(event.target).attr("src", $(event.target).data("url"));
+            }
         });
 
         gifElem.mouseleave(function(event){
-            $(event.target).attr("src", $(event.target).data("url_still"));
+            if(!$(event.target).data("active")){
+                $(event.target).attr("src", $(event.target).data("url_still"));
+            }
+        });
+
+        gifElem.on("click", function(){
+            $(event.target).data("active", !$(event.target).data("active"));
+
+            if($(event.target).data("active")){
+                if($(event.target).attr("src") != $(event.target).data("url")){
+                    $(event.target).attr("src", $(event.target).data("url"));
+                }
+            }else{
+                $(event.target).attr("src", $(event.target).data("url_still"));
+            }
         });
 
         $("#gifContainer").append(gifElem);
@@ -71,17 +88,27 @@ function clearGifs(){
 
 $(document).ready(function(){
     $("#searchButton").on("click", function(){
-        addSearch($("#searchInput").val());
-        $("#searchInput").val("");
+        if($("#searchInput").val() != ""){
+            addSearch($("#searchInput").val());
+            $("#searchInput").val("");
+        }
     });
 
     $("#searchInput").keypress(function(event){
         if(event.key === "Enter"){
-            addSearch($("#searchInput").val());
-            $("#searchInput").val("");
+            if($("#searchInput").val() != ""){
+                addSearch($("#searchInput").val());
+                $("#searchInput").val("");
+            }
         }
-        
     });
     
     addSearch("parrot");
+    addSearch("giraffe");
+    addSearch("dog");
+    addSearch("cat");
+    addSearch("moose");
+    addSearch("lizard");
+
+    document.cookie = "testcookie = YES;";
 });
