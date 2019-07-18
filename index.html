@@ -5,26 +5,63 @@
             Giphy Project
         </title>
         <meta charset="UTF-8">
-
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous"></script>
-
-        <script src="assets/script.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <link rel="stylesheet" type="text/css" href="assets/reset.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="assets/style.css">
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="assets/script.js"></script>
     </head>
 
-    <body>
-        <div id="inputContainer">
-            <div class="intro">Welcome to my gif searching site!</div>
-            <div class="intro">You can search up gifs here!</div>
-            <input name="query" type="text" id="searchInput"/>
-            <button type="submit" id="searchButton">Submit</button>
-        </div>
+    <body class="teal lighten-3">
+        <nav>
+            <div class="nav-wrapper center-align">
+                <a class="brand-logo">Gif Site</a>
+                
+                <ul class="right">
+                    <li><a onclick="showResults()">Search Results</a></li>
+                    <li><a onclick="findFavsFromIds()">Favorites</a></li>
+                    <li><a onclick="clearFavs()">Reset Data</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+            <div class="section"></div>
+            <ul id="searchContainer" class="pagination center-align">
+                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+            </ul>
+            <div class="section"></div>
+                              
+            <div class="row">
+                <div class="card blue-grey darken-1 z-depth-2 col s4 offset-s1">
+                    <div class="card-content grey-text text-lighten-4">
+                        <span class="card-title">Search</span>
+                        <p>Look for gifs here, make sure to favorite the ones you like!</p>
+                    </div>
+                    <div class="card-action">
+                        <div class="input-field">
+                            <i class="material-icons prefix">search</i>
+                            <input  id="search_input" type="text" class="validate">
+                            <label class="active" for="search_input">Search Term</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="gifContainer" class="center-align container">
+
+            </div>
+            
+        </main>
         
-        <div id="searchContainer"></div>
-        <div id="gifContainer"></div>
+        <footer>
+
+        </footer>
     </body>
 </html>
