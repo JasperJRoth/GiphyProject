@@ -226,9 +226,9 @@ function removeFav(id){
 function refreshFavs(){
     $(".favBtn").each(function(){
         if(favorites.includes($(this).data("id"))){
-            $(this).html($(`<a class="btn-floating btn-large pink lighten-2 favBtn"><i class="material-icons">favorite</i></a>`));
+            $(this).html($(`<a class="btn-floating btn-large red lighten-2 favBtn"><i class="material-icons">favorite</i></a>`));
         }else{
-            $(this).html($(`<a class="btn-floating btn-large pink lighten-2 favBtn"><i class="material-icons">favorite_border</i></a>`));
+            $(this).html($(`<a class="btn-floating btn-large red lighten-2 favBtn"><i class="material-icons">favorite_border</i></a>`));
         }
     });
 }
@@ -258,9 +258,9 @@ function showFavs(favGifs){
         });
 
         if(favorites.includes(gif.id)){
-            favBtn.html($(`<a class="btn-floating btn-large pink lighten-2 favBtn"><i class="material-icons">favorite</i></a>`));
+            favBtn.html($(`<a class="btn-floating btn-large red lighten-2 favBtn"><i class="material-icons">favorite</i></a>`));
         }else{
-            favBtn.html($(`<a class="btn-floating btn-large pink lighten-2 favBtn"><i class="material-icons">favorite_border</i></a>`));
+            favBtn.html($(`<a class="btn-floating btn-large red lighten-2 favBtn"><i class="material-icons">favorite_border</i></a>`));
         }
 
         favBtn.data("id", gif.id);
