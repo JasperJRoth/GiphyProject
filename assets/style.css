@@ -2,3 +2,32 @@
     width: 100%;
     height: auto;
 }
+
+.favBtn{
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  /* label focus color */
+.input-field input[type=text]:focus + label {
+    color: #ee6e73 !important;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #ee6e73 !important;
+    box-shadow: 0 1px 0 0 #ee6e73 !important;
+}
+
+.input-field input[type=text] + label{
+    color: #424242 !important;
+}

@@ -49,7 +49,6 @@ function addSearch(s){
 }
 
 function findFavsFromIds(){
-
     if(favorites.length <= 0){
         M.toast({html: "You have no favorites!"});
         return;
@@ -146,17 +145,101 @@ function moveActiveSearchLeft(){
 }
 
 function displayActiveSearch(){
-    var currentRow = -1;
-    var rowsList = []
+    var gifList = [];
     
     clearGifs();
 
-    searches[activeSearch].gifs.forEach(function(gif, i){
-        if(i % 4 === 0){
-            currentRow++;
-            rowsList.push($(`<div class="row gifRow">`))
+    searches[activeSearch].gifs.forEach(function(gif){
+        var gifWrapper = $(`<div class="col s12 m6 l4 xl3 card teal lighten-1 gifWrapper"></div>`);
+        var gifElem = $(`<a><img class="card-content gifImg" src="${gif.url_still}"></a>`);
+        var favBtn = $(`<a class="favBtn">`);
+
+        gifElem.data("isStill", true);
+        gifElem.data("url", gif.url);
+        gifElem.data("url_still", gif.url_still);
+
+        gifElem.on("click", function(){
+            if($(this).data("isStill")){
+                $(this).data("isStill", false);
+                $(this).children("img").attr("src", $(this).data("url"))
+            }else{
+                $(this).data("isStill", true);
+                $(this).children("img").attr("src", $(this).data("url_still"))
+            }
+        });
+
+        if(favorites.includes(gif.id)){
+            favBtn.html($(`<a class="btn-floating btn-large red lighten-2 favBtn"><i class="material-icons">favorite</i></a>`));
+        }else{
+            favBtn.html($(`<a class="btn-floating btn-large red lighten-2 favBtn"><i class="material-icons">favorite_border</i></a>`));
         }
-        var gifWrapper = $(`<div class="col s3 card teal lighten-1"></div>`);
+
+        favBtn.data("id", gif.id);
+
+        favBtn.on("click", function(){
+            if(favorites.includes($(this).data("id"))){
+                removeFav($(this).data("id"));
+            }else{
+                addFav($(this).data("id"));
+            }
+        });
+
+        gifWrapper.append(gifElem);
+
+        gifWrapper.append(favBtn);
+
+        gifWrapper.append($(`<div class="section">`));
+        gifWrapper.append($(`<div class="section">`));
+
+        gifList.push(gifWrapper);
+    });
+
+    gifList.forEach(function(gif){
+        $("#gifContainer").append(gif);
+    });
+}
+
+function clearGifs(){
+    $(".gifWrapper").remove();
+}
+
+function clearFavs(){
+    favorites = [];
+    localStorage.setItem("favorites", "");
+    refreshFavs();
+}
+
+function addFav(id){
+    if(!favorites.includes(id)){
+        favorites.push(id);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+        refreshFavs();
+    }
+}
+
+function removeFav(id){
+    favorites.splice(favorites.indexOf(id), 1);
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    refreshFavs();
+}
+
+function refreshFavs(){
+    $(".favBtn").each(function(){
+        if(favorites.includes($(this).data("id"))){
+            $(this).html($(`<a class="btn-floating btn-large pink lighten-2 favBtn"><i class="material-icons">favorite</i></a>`));
+        }else{
+            $(this).html($(`<a class="btn-floating btn-large pink lighten-2 favBtn"><i class="material-icons">favorite_border</i></a>`));
+        }
+    });
+}
+
+function showFavs(favGifs){
+    var gifList = [];
+    
+    clearGifs();
+
+    favGifs.forEach(function(gif){
+        var gifWrapper = $(`<div class="col s12 m6 l4 xl3 card teal lighten-1 gifWrapper"></div>`);
         var gifElem = $(`<a><img class="card-content gifImg" src="${gif.url_still}"></a>`);
         var favBtn = $(`<a class="favBtn">`);
 
@@ -194,104 +277,14 @@ function displayActiveSearch(){
 
         gifWrapper.append(favBtn);
 
-        rowsList[currentRow].append(gifWrapper);
+        gifWrapper.append($(`<div class="section">`));
+        gifWrapper.append($(`<div class="section">`));
+        
+        gifList.push(gifWrapper);
     });
 
-    rowsList.forEach(function(row){
-        $("#gifContainer").append(row);
-    });
-}
-
-function clearGifs(){
-    $(".gifRow").remove();
-}
-
-function clearFavs(){
-    favorites = [];
-    localStorage.setItem("favorites", "");
-    refreshFavs();
-}
-
-function addFav(id){
-    if(!favorites.includes(id)){
-        favorites.push(id);
-        localStorage.setItem("favorites", JSON.stringify(favorites));
-        refreshFavs();
-    }
-}
-
-function removeFav(id){
-    favorites.splice(favorites.indexOf(id), 1);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    refreshFavs();
-}
-
-function refreshFavs(){
-    $(".favBtn").each(function(){
-        if(favorites.includes($(this).data("id"))){
-            $(this).html($(`<a class="btn-floating btn-large pink lighten-2 favBtn"><i class="material-icons">favorite</i></a>`));
-        }else{
-            $(this).html($(`<a class="btn-floating btn-large pink lighten-2 favBtn"><i class="material-icons">favorite_border</i></a>`));
-        }
-    });
-}
-
-function showFavs(gifs){
-    clearGifs();
-
-    console.log(gifs);
-
-    var currentRow = -1;
-    var rowsList = []
-
-    gifs.forEach(function(gif, i){
-        if(i % 4 === 0){
-            currentRow++;
-            rowsList.push($(`<div class="row gifRow">`))
-        }
-        var gifWrapper = $(`<div class="col s3 card teal lighten-1"></div>`);
-        var gifElem = $(`<a><img class="card-content" src="${gif.url_still}"></a>`);
-        var favBtn = $(`<a class="favBtn">`);
-
-        gifElem.data("isStill", true);
-        gifElem.data("url", gif.url);
-        gifElem.data("url_still", gif.url_still);
-
-        gifElem.on("click", function(){
-            if($(this).data("isStill")){
-                $(this).data("isStill", false);
-                $(this).children("img").attr("src", $(this).data("url"))
-            }else{
-                $(this).data("isStill", true);
-                $(this).children("img").attr("src", $(this).data("url_still"))
-            }
-        });
-
-        if(favorites.includes(gif.id)){
-            favBtn.html($(`<a class="btn-floating btn-large pink lighten-2 favBtn"><i class="material-icons">favorite</i></a>`));
-        }else{
-            favBtn.html($(`<a class="btn-floating btn-large pink lighten-2 favBtn"><i class="material-icons">favorite_border</i></a>`));
-        }
-
-        favBtn.data("id", gif.id);
-
-        favBtn.on("click", function(){
-            if(favorites.includes($(this).data("id"))){
-                removeFav($(this).data("id"));
-            }else{
-                addFav($(this).data("id"));
-            }
-        });
-
-        gifWrapper.append(gifElem);
-
-        gifWrapper.append(favBtn);
-
-        rowsList[currentRow].append(gifWrapper);
-    });
-
-    rowsList.forEach(function(row){
-        $("#gifContainer").append(row);
+    gifList.forEach(function(gif){
+        $("#gifContainer").append(gif);
     });
 }
 
